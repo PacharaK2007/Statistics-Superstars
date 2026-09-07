@@ -1,0 +1,15 @@
+DATA CLEANING LOG
+==================================================
+
+✓ Filled 2 missing values in 'culmen_length_mm' with median (44.45)
+✓ Filled 2 missing values in 'culmen_depth_mm' with median (17.3)
+✓ Filled 2 missing values in 'flipper_length_mm' with median (197.0)
+✓ Filled 2 missing values in 'body_mass_g' with median (4050.0)
+✓ Filled 10 missing values in 'sex' with mode ('MALE')
+✓ Converted 'species' to categorical
+✓ Converted 'island' to categorical
+✓ Converted 'sex' to categorical
+✓ Added 'culmen_area_mm2' (culmen_length_mm × culmen_depth_mm)
+✓ Added 'flipper_to_mass_ratio' (flipper_length_mm / body_mass_g)
+
+Final shape: (344, 9)

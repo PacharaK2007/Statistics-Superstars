@@ -1,0 +1,7 @@
+Column,Statistic,P-value,Normal?,Interpretation
+culmen_length_mm,0.9756636462795837,1.484936609889751e-05,False,Not normal
+culmen_depth_mm,0.9731252340381633,5.16412811470642e-06,False,Not normal
+flipper_length_mm,0.9518713235139791,3.5845219923681225e-09,False,Not normal
+body_mass_g,0.9595592888888114,3.8141558270859e-08,False,Not normal
+culmen_area_mm2,0.9533105211155187,5.47922218398919e-09,False,Not normal
+flipper_to_mass_ratio,0.9855071278371988,0.0015830415313214227,False,Not normal

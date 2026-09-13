@@ -1,0 +1,7 @@
+column,best_fit,p_value,good_fit
+culmen_length_mm,Gamma,0.07146031617491178,True
+culmen_depth_mm,Gamma,0.018869179488619194,False
+flipper_length_mm,Gamma,0.003330672648155989,False
+body_mass_g,Gamma,0.25417227449294744,True
+culmen_area_mm2,Gamma,0.806026960039055,True
+flipper_to_mass_ratio,Gamma,0.4592696488768978,True

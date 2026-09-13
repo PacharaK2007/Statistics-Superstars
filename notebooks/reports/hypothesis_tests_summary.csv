@@ -1,0 +1,5 @@
+test,variable1,variable2,statistic,p_value,significant
+One-sample t-test,flipper_length_mm,200,1.1803006253086483,0.23869855157888353,False
+Independent t-test,body_mass_g (Adelie),body_mass_g (Chinstrap),-0.4729541527980669,0.636719081046907,False
+One-way ANOVA,body_mass_g,species,337.5873505862166,1.4012418254923014e-81,True
+Chi-square Test,species,island,299.55032743148195,1.3545738297192517e-63,True

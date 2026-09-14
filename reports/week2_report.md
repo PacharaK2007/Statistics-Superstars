@@ -1,7 +1,7 @@
 # Week 2 Report: Statistical Analysis
 
-## Team: [Your team name]
-**Date:** [Submission date]
+## Team: Statistical Superstar
+**Date:** 13/9/2026
 
 ---
 
@@ -128,11 +128,11 @@
 ## Appendix
 
 **Files Generated:**
-- `reports/hypothesis_tests_summary.csv`
-- `reports/distribution_fitting_summary.csv`
-- `reports/ci_comparison.csv`
-- `reports/figures/distribution_fit_*.png`
-- `reports/figures/confidence_intervals_comparison.png`
+- `../reports/hypothesis_tests_summary.csv`
+- `../reports/distribution_fitting_summary.csv`
+- `../reports/ci_comparison.csv`
+- `../reports/figures/distribution_fit_*.png`
+- `../reports/figures/confidence_intervals_comparison.png`
 
 **Notebooks:**
 - `notebooks/02_hypothesis_testing.ipynb`

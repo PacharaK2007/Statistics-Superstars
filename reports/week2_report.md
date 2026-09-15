@@ -147,3 +147,13 @@
 - `notebooks/02_hypothesis_testing.ipynb`
 - `notebooks/03_distribution_fitting.ipynb`
 - `notebooks/04_confidence_intervals.ipynb`
+
+---
+
+## Null Hypothesis
+Test  |	Null Hypothesis (H₀) |	Result
+|-------------|------------------|-------|
+One-sample  | Mean flipper_length_mm = 200 mm	| p = 0.24 → Fail to reject H₀ (consistent with 200mm) |
+Independent | Mean body_mass_g of Adelie = Chinstrap | p = 0.64 → Fail to reject H₀ (consistent with being equal) |
+ANOVA	    | Mean body_mass_g is equal across all 3 species | p < 0.0001 → Reject H₀ (at least one group differs) |
+Chi-square	| species and island are independent	| p < 0.0001 → Reject H₀ (they are associated) |

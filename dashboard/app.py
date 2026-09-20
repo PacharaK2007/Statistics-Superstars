@@ -104,9 +104,9 @@ elif analysis_type == "Distributions":
     st.pyplot(plot_boxplots_by_category(filtered_df, col, "species"))
 
     with st.expander("Best-fitting distribution (Normal / Exponential / Gamma / Lognormal / Uniform)"):
-        fit_result = analyzer.fit_best_distribution(col)
-        st.write(f"Best fit by K-S p-value: **{fit_result['best_fit']}** (p = {fit_result['best_p']:.4f})")
-        st.json({k: {kk: vv for kk, vv in v.items() if kk != "params"} for k, v in fit_result["results"].items()})
+        fit_result = analyzer.fit_distribution(col)
+        st.write(f"Best fit by K-S p-value: **{fit_result['best_fit']}** (p = {fit_result['best_p_value']:.4f})")
+        st.json({k: {kk: vv for kk, vv in v.items() if kk != "params"} for k, v in fit_result["distributions"].items()})
 
 elif analysis_type == "Hypothesis Testing":
     st.header("Statistical Tests")
@@ -130,10 +130,10 @@ elif analysis_type == "Hypothesis Testing":
         else:
             g1 = st.selectbox("Group 1", groups, index=0)
             g2 = st.selectbox("Group 2", groups, index=1 if len(groups) > 1 else 0)
-            result = analyzer.independent_t_test(col, group_col, g1, g2)
+            result = analyzer.t_test(col, group_col, g1, g2)
             c1, c2, c3 = st.columns(3)
-            c1.metric(f"Mean ({g1})", f"{result['mean_group1']:.2f}")
-            c2.metric(f"Mean ({g2})", f"{result['mean_group2']:.2f}")
+            c1.metric(f"Mean ({g1})", f"{result['mean1']:.2f}")
+            c2.metric(f"Mean ({g2})", f"{result['mean2']:.2f}")
             c3.metric("p-value", f"{result['p_value']:.4f}")
             st.write(f"**{'Significant' if result['significant'] else 'Not significant'}** difference at α = 0.05.")
             st.pyplot(plot_boxplots_by_category(filtered_df[filtered_df[group_col].isin([g1, g2])], col, group_col))
@@ -141,7 +141,7 @@ elif analysis_type == "Hypothesis Testing":
     elif test_choice == "One-way ANOVA":
         col = st.selectbox("Variable", numeric_cols)
         group_col = st.selectbox("Group by", categorical_cols, index=categorical_cols.index("species") if "species" in categorical_cols else 0)
-        result = analyzer.anova(col, group_col)
+        result = analyzer.anova_test(col, group_col)
         c1, c2 = st.columns(2)
         c1.metric("F-statistic", f"{result['f_statistic']:.3f}")
         c2.metric("p-value", f"{result['p_value']:.4g}")
@@ -154,7 +154,7 @@ elif analysis_type == "Hypothesis Testing":
         if col1 == col2:
             st.warning("Choose two different categorical variables.")
         else:
-            result = analyzer.chi_square(col1, col2)
+            result = analyzer.chi_square_test(col1, col2)
             c1, c2 = st.columns(2)
             c1.metric("Chi-square statistic", f"{result['chi2_statistic']:.3f}")
             c2.metric("p-value", f"{result['p_value']:.4g}")
@@ -164,10 +164,10 @@ elif analysis_type == "Hypothesis Testing":
     with st.expander("95% confidence interval & bootstrap"):
         col = st.selectbox("Variable for CI", numeric_cols, key="ci_col")
         ci = analyzer.confidence_interval(col)
-        st.write(f"Mean = {ci['mean']:.3f}, 95% CI = ({ci['lower']:.3f}, {ci['upper']:.3f}) using the {ci['distribution']} distribution.")
+        st.write(f"Mean = {ci['mean']:.3f}, 95% CI = ({ci['lower_bound']:.3f}, {ci['upper_bound']:.3f}) using the {ci['distribution']} distribution.")
         if st.button("Run bootstrap (2,000 resamples)"):
-            lower, upper = analyzer.bootstrap_ci(col, np.mean, n_bootstrap=2000)
-            st.write(f"Bootstrap 95% CI for the mean: ({lower:.3f}, {upper:.3f})")
+            bootstrap_result = analyzer.bootstrap_ci(col, np.mean, n_bootstrap=2000)
+            st.write(f"Bootstrap 95% CI for the mean: ({bootstrap_result['lower_bound']:.3f}, {bootstrap_result['upper_bound']:.3f})")
 
 elif analysis_type == "Correlations":
     st.header("Correlation Explorer")
@@ -187,4 +187,4 @@ elif analysis_type == "Correlations":
     st.pyplot(create_correlation_heatmap(filtered_df))
 
 st.sidebar.markdown("---")
-st.sidebar.caption("CSX 2002 · Statistics Superstars · Week 3 dashboard")
+st.sidebar.caption("CSX 2003 · Statistics Superstars · Week 3 dashboard")

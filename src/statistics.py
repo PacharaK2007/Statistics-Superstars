@@ -153,23 +153,14 @@ class StatisticalAnalyzer:
 
     # ==================== HYPOTHESIS TESTING ====================
 
-    def t_test(self, column1: str, column2: Union[str, float],
+    def t_test(self, column1: str, column2: Union[str, float], 
+               group1: Any = None, group2: Any = None, 
                paired: bool = False, alternative: str = 'two-sided') -> Dict:
         """
-        Perform t-test (one-sample, independent, or paired).
-
-        Args:
-            column1: First column name
-            column2: Second column name OR value for one-sample test
-            paired: Whether it's a paired test
-            alternative: 'two-sided', 'less', or 'greater'
-
-        Returns:
-            Dictionary with test results
+        Perform t-test (one-sample, grouped independent, or two-column).
         """
-        data1 = self.data[column1].dropna()
         if isinstance(column2, (int, float)):
-            # One-sample t-test
+            data1 = self.data[column1].dropna()
             statistic, p_value = stats.ttest_1samp(data1, column2, alternative=alternative)
             return {
                 'test': 'One-sample t-test',
@@ -182,24 +173,46 @@ class StatisticalAnalyzer:
                 'significant': p_value < 0.05,
                 'interpretation': f"Mean significantly differs from {column2}" if p_value < 0.05 else f"Mean not significantly different from {column2}"
             }
+        
+        elif group1 is not None and group2 is not None:
+            sub_df = self.data.dropna(subset=[column1, column2])
+            data1 = sub_df[sub_df[column2] == group1][column1]
+            data2 = sub_df[sub_df[column2] == group2][column1]
+            
+            if stats.levene(data1, data2).pvalue > 0.05:
+                statistic, p_value = stats.ttest_ind(data1, data2, equal_var=True, alternative=alternative)
+            else:
+                statistic, p_value = stats.ttest_ind(data1, data2, equal_var=False, alternative=alternative)
+                
+            return {
+                'test': 'Independent t-test (Grouped)',
+                'variable': column1,
+                'group_column': column2,
+                'mean1': data1.mean(),
+                'mean2': data2.mean(),
+                'mean_diff': data1.mean() - data2.mean(),
+                'statistic': statistic,
+                'p_value': p_value,
+                'df': len(data1) + len(data2) - 2,
+                'significant': p_value < 0.05,
+                'interpretation': f"Significant difference between {group1} and {group2}" if p_value < 0.05 else f"No significant difference between {group1} and {group2}"
+            }
+            
         else:
-            # Two-sample t-test
+            data1 = self.data[column1].dropna()
             data2 = self.data[column2].dropna()
-            # Check if paired
             if paired:
                 if len(data1) != len(data2):
                     return {'error': 'Paired test requires equal sample sizes'}
                 statistic, p_value = stats.ttest_rel(data1, data2, alternative=alternative)
                 test_type = 'Paired t-test'
             else:
-                # Check equal variances for independent t-test
                 if stats.levene(data1, data2).pvalue > 0.05:
-                    # Equal variance assumed
                     statistic, p_value = stats.ttest_ind(data1, data2, equal_var=True, alternative=alternative)
                 else:
-                    # Equal variance NOT assumed (Welch's t-test)
                     statistic, p_value = stats.ttest_ind(data1, data2, equal_var=False, alternative=alternative)
                 test_type = 'Independent t-test'
+                
             return {
                 'test': test_type,
                 'variable1': column1,

@@ -150,10 +150,26 @@
 
 ---
 
-## Null Hypothesis
-Test  |	Null Hypothesis (H₀) |	Result
-|-------------|------------------|-------|
-One-sample  | Mean flipper_length_mm = 200 mm	| p = 0.24 → Fail to reject H₀ (consistent with 200mm) |
-Independent | Mean body_mass_g of Adelie = Chinstrap | p = 0.64 → Fail to reject H₀ (consistent with being equal) |
-ANOVA	    | Mean body_mass_g is equal across all 3 species | p < 0.0001 → Reject H₀ (at least one group differs) |
-Chi-square	| species and island are independent	| p < 0.0001 → Reject H₀ (they are associated) |
+1.1 One-sample t-test (flipper_length_mm vs 200)
+
+H₀: μ = 200 mm (the true mean flipper length is 200 mm)
+H₁: μ ≠ 200 mm (the true mean differs from 200 mm)
+Result: fail to reject H₀ (p = 0.24)
+
+1.1 Independent t-test (Adelie vs Chinstrap body mass)
+
+H₀: μ_Adelie = μ_Chinstrap (no difference in mean body mass)
+H₁: μ_Adelie ≠ μ_Chinstrap (means differ)
+Result: fail to reject H₀ (p = 0.64)
+
+1.2 One-way ANOVA (body_mass_g across species)
+
+H₀: μ_Adelie = μ_Chinstrap = μ_Gentoo (all species have equal mean body mass)
+H₁: at least one species mean differs from the others
+Result: reject H₀ (p < 0.0001)
+
+1.3 Chi-square test (species vs island)
+
+H₀: species and island are independent (no association)
+H₁: species and island are associated (not independent)
+Result: reject H₀ (p < 0.0001)
